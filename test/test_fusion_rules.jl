@@ -1,7 +1,7 @@
 @eval module $(gensym())
-using NDTensors.GradedAxes:
+using GradedUnitRanges:
   dual, fusion_product, space_isequal, gradedrange, flip, tensor_product
-using NDTensors.SymmetrySectors:
+using SymmetrySectors:
   ⊗,
   Fib,
   Ising,
@@ -31,7 +31,7 @@ using Test: @inferred, @test, @testset, @test_throws
     @test (@inferred q ⊗ z0) == z0
     @test (@inferred z1 ⊗ q) == z1
 
-    # using GradedAxes interface
+    # using GradedUnitRanges interface
     @test space_isequal(fusion_product(z0, z0), gradedrange([z0 => 1]))
     @test space_isequal(fusion_product(z0, z1), gradedrange([z1 => 1]))
 

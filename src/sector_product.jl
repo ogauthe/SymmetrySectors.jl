@@ -2,8 +2,8 @@
 # e.g. U(1)×U(1), U(1)×SU2(2)×SU(3)
 
 using BlockArrays: blocklengths
-using ..LabelledNumbers: LabelledInteger, label, labelled, unlabel
-using ..GradedAxes: AbstractGradedUnitRange, GradedAxes, dual
+using LabelledNumbers: LabelledInteger, label, labelled, unlabel
+using GradedUnitRanges: AbstractGradedUnitRange, GradedUnitRanges, dual
 
 # =====================================  Definition  =======================================
 struct SectorProduct{Sectors} <: AbstractSector
@@ -25,7 +25,7 @@ function quantum_dimension(::NotAbelianStyle, s::SectorProduct)
 end
 
 # use map instead of broadcast to support both Tuple and NamedTuple
-GradedAxes.dual(s::SectorProduct) = SectorProduct(map(dual, arguments(s)))
+GradedUnitRanges.dual(s::SectorProduct) = SectorProduct(map(dual, arguments(s)))
 
 function trivial(type::Type{<:SectorProduct})
   return SectorProduct(arguments_trivial(arguments_type(type)))
@@ -122,8 +122,12 @@ end
 function fusion_rule(style::SymmetryStyle, c1::AbstractSector, c2::SectorProduct)
   return fusion_rule(style, SectorProduct(c1), c2)
 end
+# Fix ambiguity error.
+function fusion_rule(style::SymmetryStyle, c1::SectorProduct, c2::SectorProduct)
+  return throw(ArgumentError("SectorProduct fusion not defined for symmetry style $style."))
+end
 
-# generic case: fusion returns a GradedAxes, even for fusion with Empty
+# generic case: fusion returns a GradedUnitRanges, even for fusion with Empty
 function fusion_rule(::NotAbelianStyle, s1::SectorProduct, s2::SectorProduct)
   return to_gradedrange(arguments_fusion_rule(arguments(s1), arguments(s2)))
 end

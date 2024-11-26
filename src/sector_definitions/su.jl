@@ -3,7 +3,7 @@
 #
 
 using HalfIntegers: HalfInteger, half, twice
-using ...GradedAxes: GradedAxes
+using ...GradedUnitRanges: GradedUnitRanges
 
 struct SU{N,M} <: AbstractSector
   # l is the first row of the
@@ -43,7 +43,7 @@ function quantum_dimension(::NotAbelianStyle, s::SU)
   return Int(d)
 end
 
-function GradedAxes.dual(s::SU)
+function GradedUnitRanges.dual(s::SU)
   l = sector_label(s)
   nl = reverse(cumsum((l[begin:(end - 1)] .- l[(begin + 1):end]..., l[end])))
   return typeof(s)(nl)
@@ -87,7 +87,7 @@ end
 # optimize implementation
 quantum_dimension(s::SU{2}) = sector_label(s)[1] + 1
 
-GradedAxes.dual(s::SU{2}) = s
+GradedUnitRanges.dual(s::SU{2}) = s
 
 function label_fusion_rule(::Type{<:SU{2}}, s1, s2)
   irreps = [SU{2}((i,)) for i in (abs(s1[1] - s2[1])):2:(s1[1] + s2[1])]

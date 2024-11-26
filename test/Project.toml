@@ -1,0 +1,5 @@
+[deps]
+Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
+GradedUnitRanges = "e2de450a-8a67-46c7-b59c-01d5a3d041c5"
+SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"

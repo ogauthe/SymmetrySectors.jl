@@ -5,7 +5,7 @@
 #
 
 using HalfIntegers: Half, twice
-using ..GradedAxes: GradedAxes
+using ..GradedUnitRanges: GradedUnitRanges
 
 struct Ising <: AbstractSector
   l::Half{Int}
@@ -21,7 +21,7 @@ end
 
 SymmetryStyle(::Type{Ising}) = NotAbelianStyle()
 
-GradedAxes.dual(i::Ising) = i
+GradedUnitRanges.dual(i::Ising) = i
 
 sector_label(i::Ising) = i.l
 

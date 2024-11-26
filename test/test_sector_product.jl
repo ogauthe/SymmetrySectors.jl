@@ -1,5 +1,5 @@
 @eval module $(gensym())
-using NDTensors.SymmetrySectors:
+using SymmetrySectors:
   ×,
   ⊗,
   Fib,
@@ -14,7 +14,7 @@ using NDTensors.SymmetrySectors:
   quantum_dimension,
   arguments,
   trivial
-using NDTensors.GradedAxes: dual, fusion_product, space_isequal, gradedrange
+using GradedUnitRanges: dual, fusion_product, space_isequal, gradedrange
 using Test: @inferred, @test, @testset, @test_throws
 
 @testset "Test Ordered Products" begin

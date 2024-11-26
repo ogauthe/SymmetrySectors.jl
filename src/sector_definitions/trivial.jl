@@ -3,7 +3,7 @@
 # acts as a trivial sector for any AbstractSector
 #
 
-using ...GradedAxes: GradedAxes
+using ...GradedUnitRanges: GradedUnitRanges
 
 # Trivial is special as it does not have a label
 struct TrivialSector <: AbstractSector end
@@ -12,7 +12,7 @@ SymmetryStyle(::Type{TrivialSector}) = AbelianStyle()
 
 trivial(::Type{TrivialSector}) = TrivialSector()
 
-GradedAxes.dual(::TrivialSector) = TrivialSector()
+GradedUnitRanges.dual(::TrivialSector) = TrivialSector()
 
 # TrivialSector acts as trivial on any AbstractSector
 function fusion_rule(::NotAbelianStyle, ::TrivialSector, c::AbstractSector)
@@ -20,6 +20,10 @@ function fusion_rule(::NotAbelianStyle, ::TrivialSector, c::AbstractSector)
 end
 function fusion_rule(::NotAbelianStyle, c::AbstractSector, ::TrivialSector)
   return to_gradedrange(c)
+end
+# Fix ambiguity error.
+function fusion_rule(::NotAbelianStyle, c::TrivialSector, ::TrivialSector)
+  return to_gradedrange(TrivialSector())
 end
 
 # abelian case: return Sector

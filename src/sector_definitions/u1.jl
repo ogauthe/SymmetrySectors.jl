@@ -2,7 +2,7 @@
 # U₁ group (circle group, or particle number, total Sz etc.)
 #
 
-using ...GradedAxes: GradedAxes
+using ...GradedUnitRanges: GradedUnitRanges
 
 # Parametric type to allow both integer label as well as
 # HalfInteger for easy conversion to/from SU(2)
@@ -14,7 +14,7 @@ SymmetryStyle(::Type{<:U1}) = AbelianStyle()
 sector_label(u::U1) = u.n
 
 set_sector_label(s::U1, sector_label) = typeof(s)(sector_label)
-GradedAxes.dual(s::U1) = set_sector_label(s, -sector_label(s))
+GradedUnitRanges.dual(s::U1) = set_sector_label(s, -sector_label(s))
 
 trivial(::Type{U1}) = trivial(U1{Int})
 trivial(::Type{U1{T}}) where {T} = U1(zero(T))

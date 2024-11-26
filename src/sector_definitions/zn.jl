@@ -2,7 +2,7 @@
 # Cyclic group Zₙ
 #
 
-using ...GradedAxes: GradedAxes
+using ...GradedUnitRanges: GradedUnitRanges
 
 struct Z{N} <: AbstractSector
   m::Int
@@ -16,7 +16,7 @@ SymmetryStyle(::Type{<:Z}) = AbelianStyle()
 sector_label(c::Z) = c.m
 
 set_sector_label(s::Z, sector_label) = typeof(s)(sector_label)
-GradedAxes.dual(s::Z) = set_sector_label(s, -sector_label(s))
+GradedUnitRanges.dual(s::Z) = set_sector_label(s, -sector_label(s))
 
 trivial(sector_type::Type{<:Z}) = sector_type(0)
 

@@ -2,8 +2,9 @@
 # all fusion categories (Z{2}, SU2, Ising...) are subtypes of AbstractSector
 
 using BlockArrays: blocklengths
-using ..LabelledNumbers: LabelledInteger, label, label_type, labelled, unlabel, unlabel_type
-using ..GradedAxes: GradedAxes, blocklabels, fuse_blocklengths, gradedrange, tensor_product
+using LabelledNumbers: LabelledInteger, label, label_type, labelled, unlabel, unlabel_type
+using GradedUnitRanges:
+  GradedUnitRanges, blocklabels, fuse_blocklengths, gradedrange, tensor_product
 
 abstract type AbstractSector end
 
@@ -67,16 +68,16 @@ function label_fusion_rule(sector_type::Type{<:AbstractSector}, l1, l2)
   return [abelian_label_fusion_rule(sector_type, l1, l2) => 1]
 end
 
-# ================================  GradedAxes interface  ==================================
+# ================================  GradedUnitRanges interface  ==================================
 # tensor_product interface
-function GradedAxes.fuse_blocklengths(
+function GradedUnitRanges.fuse_blocklengths(
   l1::LabelledInteger{<:Integer,<:AbstractSector},
   l2::LabelledInteger{<:Integer,<:AbstractSector},
 )
   return fuse_blocklengths(combine_styles(SymmetryStyle(l1), SymmetryStyle(l2)), l1, l2)
 end
 
-function GradedAxes.fuse_blocklengths(
+function GradedUnitRanges.fuse_blocklengths(
   ::NotAbelianStyle, l1::LabelledInteger, l2::LabelledInteger
 )
   fused = label(l1) ⊗ label(l2)
@@ -84,7 +85,7 @@ function GradedAxes.fuse_blocklengths(
   return gradedrange(v)
 end
 
-function GradedAxes.fuse_blocklengths(
+function GradedUnitRanges.fuse_blocklengths(
   ::AbelianStyle, l1::LabelledInteger, l2::LabelledInteger
 )
   fused = label(l1) ⊗ label(l2)
@@ -97,18 +98,18 @@ to_gradedrange(l::LabelledInteger) = gradedrange([l])
 to_gradedrange(g::AbstractUnitRange) = g
 
 # allow to fuse a Sector with a GradedUnitRange
-function GradedAxes.tensor_product(c::AbstractSector, g::AbstractUnitRange)
+function GradedUnitRanges.tensor_product(c::AbstractSector, g::AbstractUnitRange)
   return tensor_product(to_gradedrange(c), g)
 end
 
-function GradedAxes.tensor_product(g::AbstractUnitRange, c::AbstractSector)
+function GradedUnitRanges.tensor_product(g::AbstractUnitRange, c::AbstractSector)
   return tensor_product(g, to_gradedrange(c))
 end
 
-function GradedAxes.tensor_product(c1::AbstractSector, c2::AbstractSector)
+function GradedUnitRanges.tensor_product(c1::AbstractSector, c2::AbstractSector)
   return to_gradedrange(fusion_rule(c1, c2))
 end
 
-function GradedAxes.fusion_product(c::AbstractSector)
+function GradedUnitRanges.fusion_product(c::AbstractSector)
   return to_gradedrange(c)
 end

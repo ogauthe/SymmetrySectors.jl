@@ -1,6 +1,6 @@
 @eval module $(gensym())
-using NDTensors.GradedAxes: dual
-using NDTensors.SymmetrySectors:
+using GradedUnitRanges: dual
+using SymmetrySectors:
   Fib,
   Ising,
   O2,
