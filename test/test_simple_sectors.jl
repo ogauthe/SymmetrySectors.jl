@@ -1,5 +1,5 @@
 @eval module $(gensym())
-using GradedUnitRanges: dual
+using GradedUnitRanges: dual, sector_type
 using SymmetrySectors:
   Fib,
   Ising,
@@ -18,6 +18,8 @@ using Test: @inferred, @test, @testset, @test_throws
   @testset "TrivialSector" begin
     q = TrivialSector()
 
+    @test sector_type(q) === TrivialSector
+    @test sector_type(typeof(q)) === TrivialSector
     @test (@inferred quantum_dimension(q)) == 1
     @test q == q
     @test trivial(q) == q
@@ -32,6 +34,8 @@ using Test: @inferred, @test, @testset, @test_throws
     q2 = U1(2)
     q3 = U1(3)
 
+    @test sector_type(q1) === U1{Int}
+    @test sector_type(typeof(q1)) === U1{Int}
     @test quantum_dimension(q1) == 1
     @test quantum_dimension(q2) == 1
     @test (@inferred quantum_dimension(q1)) == 1

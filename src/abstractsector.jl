@@ -69,6 +69,8 @@ function label_fusion_rule(sector_type::Type{<:AbstractSector}, l1, l2)
 end
 
 # ================================  GradedUnitRanges interface  ==================================
+GradedUnitRanges.sector_type(S::Type{<:AbstractSector}) = S
+
 # tensor_product interface
 function GradedUnitRanges.fuse_blocklengths(
   l1::LabelledInteger{<:Integer,<:AbstractSector},
