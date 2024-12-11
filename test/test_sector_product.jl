@@ -1,4 +1,3 @@
-@eval module $(gensym())
 using SymmetrySectors:
   ×,
   ⊗,
@@ -618,5 +617,4 @@ end
     @test !(s < SectorProduct(; A=U1(0)))
     @test !(s > SectorProduct(; A=U1(0)))
   end
-end
 end

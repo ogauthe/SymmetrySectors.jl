@@ -3,7 +3,7 @@
 
 using BlockArrays: blocklengths
 using LabelledNumbers: LabelledInteger, label, labelled, unlabel
-using GradedUnitRanges: AbstractGradedUnitRange, GradedUnitRanges, dual
+using GradedUnitRanges: GradedUnitRanges, dual
 
 # =====================================  Definition  =======================================
 struct SectorProduct{Sectors} <: AbstractSector

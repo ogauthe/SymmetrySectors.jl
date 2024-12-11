@@ -1,4 +1,3 @@
-@eval module $(gensym())
 using GradedUnitRanges: dual, sector_type
 using SymmetrySectors:
   Fib,
@@ -215,5 +214,4 @@ using Test: @inferred, @test, @testset, @test_throws
 
     @test ı < σ < ψ
   end
-end
 end

@@ -1,4 +1,3 @@
-@eval module $(gensym())
 using GradedUnitRanges:
   dual, fusion_product, space_isequal, gradedrange, flip, tensor_product
 using SymmetrySectors:
@@ -283,5 +282,4 @@ end
     @test_throws MethodError fusion_product(g1, SU2(1))
     @test_throws MethodError fusion_product(U1(1), g3)
   end
-end
 end
