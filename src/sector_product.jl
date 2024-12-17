@@ -3,7 +3,7 @@
 
 using BlockArrays: blocklengths
 using LabelledNumbers: LabelledInteger, label, labelled, unlabel
-using GradedUnitRanges: GradedUnitRanges, dual
+using GradedUnitRanges: GradedUnitRanges, dual, map_blocklabels
 
 # =====================================  Definition  =======================================
 struct SectorProduct{Sectors} <: AbstractSector
@@ -231,10 +231,6 @@ function arguments_common(nt1::NamedTuple, nt2::NamedTuple)
 end
 
 arguments_diff(nt1::NamedTuple, nt2::NamedTuple) = symdiff_keys(nt1, nt2)
-
-function map_blocklabels(f, r::AbstractUnitRange)
-  return gradedrange(labelled.(unlabel.(blocklengths(r)), f.(blocklabels(r))))
-end
 
 function shared_arguments_fusion_rule(shared1::NT, shared2::NT) where {NT<:NamedTuple}
   tuple_fused = shared_arguments_fusion_rule(values(shared1), values(shared2))
