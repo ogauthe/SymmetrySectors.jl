@@ -1,5 +1,7 @@
 module SymmetrySectors
 
+export U1, Z, dual
+
 include("symmetry_style.jl")
 include("abstractsector.jl")
 include("sector_definitions/fib.jl")
