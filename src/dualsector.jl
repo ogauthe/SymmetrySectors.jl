@@ -55,8 +55,8 @@ end
 trivial(dual_type::Type{<:DualSector}) = trivial(sector_type(dual_type))
 
 ×(s1::DualSector, s2::DualSector) = dual(nondual(s1) × nondual(s2))
-×(s1::DualSector, s2::AbstractSector) = error("Not implemented")
-×(s1::AbstractSector, s2::DualSector) = error("Not implemented")
+×(s1::DualSector, s2::AbstractSector) = throw("Not implemented")
+×(s1::AbstractSector, s2::DualSector) = throw("Not implemented")
 
 # ===============================  Fusion rule interface  ==================================
 fusion_rule(c1::DualSector, c2::AbstractSector) = fusion_rule(label_dual(nondual(c1)), c2)

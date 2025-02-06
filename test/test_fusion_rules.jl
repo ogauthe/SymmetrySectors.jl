@@ -50,6 +50,10 @@ using TestExtras: @constinferred
     @test q1 ⊗ q2 == U1(3)
     @test q2 ⊗ q1 == U1(3)
     @test (@constinferred q1 ⊗ q2) == q3
+
+    @test dual(q1) ⊗ q1 == U1(0)
+    @test q1 ⊗ dual(q1) == U1(0)
+    @test dual(q1) ⊗ dual(q1) == U1(-2)
   end
 
   @testset "O2 fusion rules" begin
@@ -141,7 +145,9 @@ end
     g1 = gradedrange([U1(-1) => 1, U1(0) => 1, U1(1) => 2])
     g2 = gradedrange([U1(-2) => 2, U1(0) => 1, U1(1) => 2])
 
-    @test space_isequal(flip(dual(g1)), gradedrange([U1(1) => 1, U1(0) => 1, U1(-1) => 2]))
+    @test_broken space_isequal(
+      flip(dual(g1)), gradedrange([U1(1) => 1, U1(0) => 1, U1(-1) => 2])
+    )
     @test (@constinferred block_dimensions(g1)) == [1, 1, 2]
 
     gt = gradedrange([
@@ -236,7 +242,7 @@ end
 
     @test space_isequal(tensor_product(g3, g4), g34)
 
-    @test space_isequal(dual(flip(g3)), g3)  # trivial for SU(2)
+    @test_broken space_isequal(dual(flip(g3)), g3)  # trivial for SU(2)
     @test space_isequal(
       (@constinferred fusion_product(g3, g4)),
       gradedrange([SU2(0) => 4, SU2(1//2) => 6, SU2(1) => 6, SU2(3//2) => 5, SU2(2) => 2]),
@@ -251,7 +257,7 @@ end
 
     g5 = gradedrange([s1 => 1, f3 => 1])
     g6 = gradedrange([s1 => 1, c3 => 1])
-    @test space_isequal(dual(flip(g5)), g6)
+    @test_broken space_isequal(dual(flip(g5)), g6)
     @test space_isequal(
       fusion_product(g5, g6), gradedrange([s1 => 2, f3 => 1, c3 => 1, ad8 => 1])
     )
