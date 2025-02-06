@@ -4,6 +4,7 @@ export U1, Z, dual
 
 include("symmetry_style.jl")
 include("abstractsector.jl")
+include("dualsector.jl")
 include("sector_definitions/fib.jl")
 include("sector_definitions/ising.jl")
 include("sector_definitions/o2.jl")

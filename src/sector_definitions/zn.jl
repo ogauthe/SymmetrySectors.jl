@@ -16,7 +16,7 @@ SymmetryStyle(::Type{<:Z}) = AbelianStyle()
 sector_label(c::Z) = c.m
 
 set_sector_label(s::Z, sector_label) = typeof(s)(sector_label)
-GradedUnitRanges.dual(s::Z) = set_sector_label(s, -sector_label(s))
+label_dual(s::Z) = set_sector_label(s, -sector_label(s))
 
 trivial(sector_type::Type{<:Z}) = sector_type(0)
 

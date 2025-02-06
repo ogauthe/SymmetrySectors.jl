@@ -11,7 +11,7 @@ end
 
 SymmetryStyle(::Type{<:su2}) = NotAbelianStyle()
 
-GradedUnitRanges.dual(s::su2) = s
+label_dual(s::su2) = s
 
 sector_label(s::su2) = s.j
 

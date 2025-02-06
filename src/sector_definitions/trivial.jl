@@ -12,7 +12,7 @@ SymmetryStyle(::Type{TrivialSector}) = AbelianStyle()
 
 trivial(::Type{TrivialSector}) = TrivialSector()
 
-GradedUnitRanges.dual(::TrivialSector) = TrivialSector()
+label_dual(::TrivialSector) = TrivialSector()
 
 # TrivialSector acts as trivial on any AbstractSector
 function fusion_rule(::NotAbelianStyle, ::TrivialSector, c::AbstractSector)

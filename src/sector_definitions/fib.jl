@@ -21,7 +21,7 @@ end
 
 SymmetryStyle(::Type{Fib}) = NotAbelianStyle()
 
-GradedUnitRanges.dual(f::Fib) = f
+label_dual(f::Fib) = f
 
 sector_label(f::Fib) = f.l
 

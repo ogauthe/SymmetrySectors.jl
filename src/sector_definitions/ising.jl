@@ -21,7 +21,7 @@ end
 
 SymmetryStyle(::Type{Ising}) = NotAbelianStyle()
 
-GradedUnitRanges.dual(i::Ising) = i
+label_dual(i::Ising) = i
 
 sector_label(i::Ising) = i.l
 
