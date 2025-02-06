@@ -1,10 +1,11 @@
 [deps]
 Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
 GradedUnitRanges = "e2de450a-8a67-46c7-b59c-01d5a3d041c5"
-SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
 SafeTestsets = "1bc83da4-3b8d-516f-aca4-4fe02f6d838f"
 Suppressor = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+TestExtras = "5ed8adda-3752-4e41-b88a-e8b09835ee3a"
 
 [compat]
 Aqua = "0.8.9"

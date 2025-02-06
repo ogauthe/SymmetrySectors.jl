@@ -12,14 +12,16 @@ using SymmetrySectors:
   fundamental,
   istrivial,
   trivial
-using Test: @inferred, @test, @testset, @test_throws
+using Test: @test, @testset, @test_throws
+using TestExtras: @constinferred
+
 @testset "Test SymmetrySectors Types" begin
   @testset "TrivialSector" begin
     q = TrivialSector()
 
     @test sector_type(q) === TrivialSector
     @test sector_type(typeof(q)) === TrivialSector
-    @test (@inferred quantum_dimension(q)) == 1
+    @test (@constinferred quantum_dimension(q)) == 1
     @test q == q
     @test trivial(q) == q
     @test istrivial(q)
@@ -37,7 +39,7 @@ using Test: @inferred, @test, @testset, @test_throws
     @test sector_type(typeof(q1)) === U1{Int}
     @test quantum_dimension(q1) == 1
     @test quantum_dimension(q2) == 1
-    @test (@inferred quantum_dimension(q1)) == 1
+    @test (@constinferred quantum_dimension(q1)) == 1
 
     @test trivial(q1) == U1(0)
     @test trivial(U1) == U1(0)
@@ -65,7 +67,7 @@ using Test: @inferred, @test, @testset, @test_throws
 
     @test quantum_dimension(z0) == 1
     @test quantum_dimension(z1) == 1
-    @test (@inferred quantum_dimension(z0)) == 1
+    @test (@constinferred quantum_dimension(z0)) == 1
 
     @test dual(z0) == z0
     @test dual(z1) == z1
@@ -93,15 +95,15 @@ using Test: @inferred, @test, @testset, @test_throws
     @test trivial(O2) == s0e
     @test istrivial(s0e)
 
-    @test (@inferred quantum_dimension(s0e)) == 1
-    @test (@inferred quantum_dimension(s0o)) == 1
-    @test (@inferred quantum_dimension(s12)) == 2
-    @test (@inferred quantum_dimension(s1)) == 2
+    @test (@constinferred quantum_dimension(s0e)) == 1
+    @test (@constinferred quantum_dimension(s0o)) == 1
+    @test (@constinferred quantum_dimension(s12)) == 2
+    @test (@constinferred quantum_dimension(s1)) == 2
 
-    @test (@inferred dual(s0e)) == s0e
-    @test (@inferred dual(s0o)) == s0o
-    @test (@inferred dual(s12)) == s12
-    @test (@inferred dual(s1)) == s1
+    @test (@constinferred dual(s0e)) == s0e
+    @test (@constinferred dual(s0o)) == s0o
+    @test (@constinferred dual(s12)) == s12
+    @test (@constinferred dual(s1)) == s1
 
     @test s0o < s0e < s12 < s1
     @test s0e == TrivialSector()
@@ -133,7 +135,7 @@ using Test: @inferred, @test, @testset, @test_throws
     @test quantum_dimension(j2) == 2
     @test quantum_dimension(j3) == 3
     @test quantum_dimension(j4) == 4
-    @test (@inferred quantum_dimension(j1)) == 1
+    @test (@constinferred quantum_dimension(j1)) == 1
 
     @test dual(j1) == j1
     @test dual(j2) == j2
@@ -175,7 +177,7 @@ using Test: @inferred, @test, @testset, @test_throws
     @test quantum_dimension(SU{3}((3, 3))) == 10
     @test quantum_dimension(SU{3}((3, 0))) == 10
     @test quantum_dimension(SU{3}((0, 0))) == 1
-    @test (@inferred quantum_dimension(f3)) == 3
+    @test (@constinferred quantum_dimension(f3)) == 3
   end
 
   @testset "Fibonacci" begin
@@ -189,8 +191,8 @@ using Test: @inferred, @test, @testset, @test_throws
     @test dual(ı) == ı
     @test dual(τ) == τ
 
-    @test (@inferred quantum_dimension(ı)) == 1.0
-    @test (@inferred quantum_dimension(τ)) == ((1 + √5) / 2)
+    @test (@constinferred quantum_dimension(ı)) == 1.0
+    @test (@constinferred quantum_dimension(τ)) == ((1 + √5) / 2)
 
     @test ı < τ
   end
@@ -208,9 +210,9 @@ using Test: @inferred, @test, @testset, @test_throws
     @test dual(σ) == σ
     @test dual(ψ) == ψ
 
-    @test (@inferred quantum_dimension(ı)) == 1.0
-    @test (@inferred quantum_dimension(σ)) == √2
-    @test (@inferred quantum_dimension(ψ)) == 1.0
+    @test (@constinferred quantum_dimension(ı)) == 1.0
+    @test (@constinferred quantum_dimension(σ)) == √2
+    @test (@constinferred quantum_dimension(ψ)) == 1.0
 
     @test ı < σ < ψ
   end
