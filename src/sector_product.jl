@@ -25,7 +25,7 @@ function quantum_dimension(::NotAbelianStyle, s::SectorProduct)
 end
 
 # use map instead of broadcast to support both Tuple and NamedTuple
-GradedUnitRanges.dual(s::SectorProduct) = SectorProduct(map(dual, arguments(s)))
+label_dual(s::SectorProduct) = SectorProduct(map(label_dual, arguments(s)))
 
 function trivial(type::Type{<:SectorProduct})
   return SectorProduct(arguments_trivial(arguments_type(type)))

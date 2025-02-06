@@ -1,4 +1,4 @@
-using GradedUnitRanges: dual, sector_type
+using GradedUnitRanges: dual, flip, isdual, nondual, sector_type
 using SymmetrySectors:
   Fib,
   Ising,
@@ -6,11 +6,13 @@ using SymmetrySectors:
   SU,
   SU2,
   TrivialSector,
+  DualSector,
   U1,
   Z,
   quantum_dimension,
   fundamental,
   istrivial,
+  label_dual,
   trivial
 using Test: @test, @testset, @test_throws
 using TestExtras: @constinferred
@@ -26,8 +28,21 @@ using TestExtras: @constinferred
     @test trivial(q) == q
     @test istrivial(q)
 
-    @test dual(q) == q
+    @test label_dual(q) == q
     @test !isless(q, q)
+
+    qb = dual(q)
+    @test qb isa DualSector
+    @test sector_type(qb) === TrivialSector
+    @test isdual(qb)
+    @test !isdual(q)
+    @test qb == qb
+    @test q != qb
+    @test nondual(qb) == q
+    @test dual(qb) == q
+    @test !isless(qb, qb)
+    @test flip(q) == qb
+    @test flip(qb) == q
   end
 
   @testset "U(1)" begin
@@ -45,7 +60,7 @@ using TestExtras: @constinferred
     @test trivial(U1) == U1(0)
     @test istrivial(U1(0))
 
-    @test dual(U1(2)) == U1(-2)
+    @test label_dual(U1(2)) == U1(-2)
     @test isless(U1(1), U1(2))
     @test !isless(U1(2), U1(1))
     @test U1(Int8(1)) == U1(1)
@@ -56,12 +71,31 @@ using TestExtras: @constinferred
     @test U1(-1) < TrivialSector()
     @test TrivialSector() < U1(1)
     @test U1(Int8(1)) < U1(Int32(2))
+
+    q2b = dual(q2)
+    @test q2b isa DualSector
+    @test isdual(q2b)
+    @test !isdual(q2)
+    @test q2b == q2b
+    @test q2b != q2
+    @test q2b != U1(-2)
+    @test nondual(q2b) == q2
+    @test dual(q2b) == q2
+    @test !isless(q2b, q2b)
+    @test dual(q1) < q2b
+    @test flip(q2) == dual(U1(-2))
+    @test flip(q2b) == U1(-2)
   end
 
   @testset "Z₂" begin
     z0 = Z{2}(0)
     z1 = Z{2}(1)
 
+    @test z0 == z0
+    @test z0 != z1
+    @test !(z0 < z0)
+    @test !(z1 < z1)
+    @test z0 < z1
     @test trivial(Z{2}) == Z{2}(0)
     @test istrivial(Z{2}(0))
 
@@ -69,10 +103,10 @@ using TestExtras: @constinferred
     @test quantum_dimension(z1) == 1
     @test (@constinferred quantum_dimension(z0)) == 1
 
-    @test dual(z0) == z0
-    @test dual(z1) == z1
+    @test label_dual(z0) == z0
+    @test label_dual(z1) == z1
 
-    @test dual(Z{2}(1)) == Z{2}(1)
+    @test label_dual(Z{2}(1)) == Z{2}(1)
     @test isless(Z{2}(0), Z{2}(1))
     @test !isless(Z{2}(1), Z{2}(0))
     @test Z{2}(0) == z0
@@ -84,6 +118,13 @@ using TestExtras: @constinferred
     @test Z{2}(0) != Z{2}(1)
     @test Z{2}(0) != Z{3}(0)
     @test Z{2}(0) != U1(0)
+
+    z1b = dual(z1)
+    @test z1b isa DualSector
+    @test z1b == z1b
+    @test z1 != z1b
+    @test flip(z1) == z1b
+    @test flip(z1b) == z1
   end
 
   @testset "O(2)" begin
@@ -100,15 +141,22 @@ using TestExtras: @constinferred
     @test (@constinferred quantum_dimension(s12)) == 2
     @test (@constinferred quantum_dimension(s1)) == 2
 
-    @test (@constinferred dual(s0e)) == s0e
-    @test (@constinferred dual(s0o)) == s0o
-    @test (@constinferred dual(s12)) == s12
-    @test (@constinferred dual(s1)) == s1
+    @test (@constinferred label_dual(s0e)) == s0e
+    @test (@constinferred label_dual(s0o)) == s0o
+    @test (@constinferred label_dual(s12)) == s12
+    @test (@constinferred label_dual(s1)) == s1
 
     @test s0o < s0e < s12 < s1
     @test s0e == TrivialSector()
     @test s0o < TrivialSector()
     @test TrivialSector() < s12
+
+    s1b = dual(s1)
+    @test s1b isa DualSector
+    @test s1b == s1b
+    @test s1b != s1
+    @test flip(s1) == s1b
+    @test flip(s1b) == s1
   end
 
   @testset "SU(2)" begin
@@ -137,10 +185,10 @@ using TestExtras: @constinferred
     @test quantum_dimension(j4) == 4
     @test (@constinferred quantum_dimension(j1)) == 1
 
-    @test dual(j1) == j1
-    @test dual(j2) == j2
-    @test dual(j3) == j3
-    @test dual(j4) == j4
+    @test label_dual(j1) == j1
+    @test label_dual(j2) == j2
+    @test label_dual(j3) == j3
+    @test label_dual(j4) == j4
 
     @test j1 < j2 < j3 < j4
     @test SU2(0) == TrivialSector()
@@ -164,10 +212,10 @@ using TestExtras: @constinferred
     @test fundamental(SU{3}) == f3
     @test fundamental(SU{4}) == f4
 
-    @test dual(f3) == SU{3}((1, 1))
-    @test dual(f4) == SU{4}((1, 1, 1))
-    @test dual(ad3) == ad3
-    @test dual(ad4) == ad4
+    @test label_dual(f3) == SU{3}((1, 1))
+    @test label_dual(f4) == SU{4}((1, 1, 1))
+    @test label_dual(ad3) == ad3
+    @test label_dual(ad4) == ad4
 
     @test quantum_dimension(f3) == 3
     @test quantum_dimension(f4) == 4
@@ -188,8 +236,8 @@ using TestExtras: @constinferred
     @test istrivial(ı)
     @test ı == TrivialSector()
 
-    @test dual(ı) == ı
-    @test dual(τ) == τ
+    @test label_dual(ı) == ı
+    @test label_dual(τ) == τ
 
     @test (@constinferred quantum_dimension(ı)) == 1.0
     @test (@constinferred quantum_dimension(τ)) == ((1 + √5) / 2)
@@ -206,9 +254,9 @@ using TestExtras: @constinferred
     @test istrivial(ı)
     @test ı == TrivialSector()
 
-    @test dual(ı) == ı
-    @test dual(σ) == σ
-    @test dual(ψ) == ψ
+    @test label_dual(ı) == ı
+    @test label_dual(σ) == σ
+    @test label_dual(ψ) == ψ
 
     @test (@constinferred quantum_dimension(ı)) == 1.0
     @test (@constinferred quantum_dimension(σ)) == √2

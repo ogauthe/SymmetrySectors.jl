@@ -36,6 +36,9 @@ Base.:(==)(c::AbstractSector, ::TrivialSector) = istrivial(c)
 Base.:(==)(::TrivialSector, c::AbstractSector) = istrivial(c)
 Base.:(==)(::TrivialSector, ::TrivialSector) = true
 
+Base.:(==)(c::DualSector, ::TrivialSector) = false
+Base.:(==)(::TrivialSector, c::DualSector) = false
+
 # sorts as trivial for any Sector
 Base.isless(c::AbstractSector, ::TrivialSector) = c < trivial(c)
 Base.isless(::TrivialSector, c::AbstractSector) = trivial(c) < c
