@@ -1,6 +1,6 @@
 # This file defines type DualSector
 
-using GradedUnitRanges: dual, nondual, sector_type
+using GradedUnitRanges: dual, isdual, nondual, nondual_type
 
 struct DualSector{NonDualSector<:AbstractSector} <: AbstractSector
   nondual::NonDualSector
@@ -28,13 +28,15 @@ function Base.show(io::IO, s::DualSector)
 end
 
 # ================================  GradedUnitRanges interface  ============================
-function dual_type(::Type{<:DualSector{NonDualSector}}) where {NonDualSector}
-  return NonDualSector
-end
-dual_type(S::Type{<:AbstractSector}) = DualSector{S}
-
 GradedUnitRanges.dual(s::AbstractSector) = DualSector(s)
 GradedUnitRanges.dual(s::DualSector) = nondual(s)
+
+GradedUnitRanges.dual_type(S::Type{<:AbstractSector}) = DualSector{S}
+function GradedUnitRanges.dual_type(
+  ::Type{<:DualSector{NonDualSector}}
+) where {NonDualSector}
+  return NonDualSector
+end
 
 GradedUnitRanges.flip(s::AbstractSector) = dual(label_dual(s))
 GradedUnitRanges.flip(s::DualSector) = label_dual(nondual(s))
@@ -44,8 +46,6 @@ GradedUnitRanges.isdual(::Type{<:DualSector}) = true
 GradedUnitRanges.sector_type(DS::Type{<:DualSector}) = nondual_type(DS)
 
 # =============================  SymmetrySectors interface  ================================
-nondual_type(T::Type) = isdual(T) ? dual_type(T) : T
-
 label_dual(s::DualSector) = dual(label_dual(dual(s)))
 
 SymmetryStyle(DS::Type{<:DualSector}) = SymmetryStyle(nondual_type(DS))
