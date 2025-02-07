@@ -313,6 +313,9 @@ using TestExtras: @constinferred
         U1(-2) × SU2(1) => 1
       ])
     )
+
+    s123b = s12b × dual(Fib(0))
+    @test (@constinferred quantum_dimension(s123b)) == 2.0
   end
 end
 

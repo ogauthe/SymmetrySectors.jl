@@ -43,6 +43,7 @@ using TestExtras: @constinferred
     @test !isless(qb, qb)
     @test flip(q) == qb
     @test flip(qb) == q
+    @test (@constinferred quantum_dimension(qb)) == 1
   end
 
   @testset "U(1)" begin
@@ -157,6 +158,7 @@ using TestExtras: @constinferred
     @test s1b != s1
     @test flip(s1) == s1b
     @test flip(s1b) == s1
+    @test (@constinferred quantum_dimension(s1b)) == 2
   end
 
   @testset "SU(2)" begin
