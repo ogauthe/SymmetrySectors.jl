@@ -14,6 +14,7 @@ end
 SectorProduct(c::SectorProduct) = _SectorProduct(arguments(c))
 
 arguments(s::SectorProduct) = s.arguments
+arguments(s::DualSector{<:SectorProduct}) = map(dual, arguments(nondual(s)))  # need map in NamedTuple
 
 # =================================  Sectors interface  ====================================
 function SymmetryStyle(T::Type{<:SectorProduct})

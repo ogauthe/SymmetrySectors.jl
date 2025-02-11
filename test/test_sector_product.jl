@@ -59,6 +59,8 @@ using TestExtras: @constinferred
     @test label_dual(s) == TrivialSector() × U1(-3) × SU2(1//2)
     @test (@constinferred trivial(s)) == SectorProduct(TrivialSector(), U1(0), SU2(0))
     @test s > trivial(s)
+
+    @test arguments(dual(s)) == dual.(arguments(s))
   end
 
   @testset "Ordered comparisons" begin
@@ -347,6 +349,8 @@ end
     @test arguments(s)[:C] == Ising("ψ")
     @test (@constinferred quantum_dimension(s)) == 5.0
     @test (@constinferred label_dual(s)) == (A=U1(-1),) × (B=SU2(2),) × (C=Ising("ψ"),)
+
+    @test arguments(dual(s)) == map(dual, arguments(s))
 
     s1 = (A=U1(1),) × (B=Z{2}(0),)
     s2 = (A=U1(1),) × (C=Z{2}(0),)
