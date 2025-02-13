@@ -13,7 +13,7 @@ using SymmetrySectors:
   quantum_dimension,
   arguments,
   trivial
-using GradedUnitRanges: dual, fusion_product, space_isequal, gradedrange
+using GradedUnitRanges: dual, fusion_product, space_isequal, gradedrange, sector_type
 using Test: @test, @testset, @test_throws
 using TestExtras: @constinferred
 
@@ -309,6 +309,9 @@ end
     s1 = (A=U1(1),) × (B=Z{2}(0),)
     s2 = (A=U1(1),) × (C=Z{2}(0),)
     @test_throws ArgumentError s1 × s2
+
+    g = gradedrange([(Nf=U1(0),) => 2, (Nf=U1(1),) => 3])
+    @test sector_type(g) <: SectorProduct
   end
 
   @testset "Construct from Pairs" begin
