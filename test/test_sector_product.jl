@@ -14,7 +14,8 @@ using SymmetrySectors:
   label_dual,
   quantum_dimension,
   trivial
-using GradedUnitRanges: dual, flip, fusion_product, isdual, labelled_isequal, gradedrange
+using GradedUnitRanges:
+  dual, flip, fusion_product, gradedrange, isdual, labelled_isequal, sector_type
 using Test: @test, @testset, @test_throws
 using TestExtras: @constinferred
 
