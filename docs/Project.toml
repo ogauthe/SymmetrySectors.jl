@@ -4,3 +4,6 @@ GradedUnitRanges = "e2de450a-8a67-46c7-b59c-01d5a3d041c5"
 LabelledNumbers = "f856a3a6-4152-4ec4-b2a7-02c1a55d7993"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
+
+[compat]
+Literate = "2"
