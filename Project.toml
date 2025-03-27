@@ -1,17 +1,19 @@
 name = "SymmetrySectors"
 uuid = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
 authors = ["ITensor developers <support@itensor.org> and contributors"]
-version = "0.1.6"
+version = "0.1.7"
 
 [deps]
 BlockArrays = "8e7c35d0-a365-5155-bbbb-fb81a777f24e"
 GradedUnitRanges = "e2de450a-8a67-46c7-b59c-01d5a3d041c5"
 HalfIntegers = "f0d1745a-41c9-11e9-1dd9-e5d34d218721"
 LabelledNumbers = "f856a3a6-4152-4ec4-b2a7-02c1a55d7993"
+TensorProducts = "decf83d6-1968-43f4-96dc-fdb3fe15fc6d"
 
 [compat]
 BlockArrays = "1.2.0"
-GradedUnitRanges = "0.1.1"
+GradedUnitRanges = "0.2"
 HalfIntegers = "1.6.0"
 LabelledNumbers = "0.1.0"
+TensorProducts = "0.1.0"
 julia = "1.10"

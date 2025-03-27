@@ -1,7 +1,5 @@
-using GradedUnitRanges:
-  dual, fusion_product, space_isequal, gradedrange, flip, tensor_product
+using GradedUnitRanges: dual, space_isequal, gradedrange, flip, unmerged_tensor_product
 using SymmetrySectors:
-  ⊗,
   Fib,
   Ising,
   O2,
@@ -13,6 +11,7 @@ using SymmetrySectors:
   block_dimensions,
   quantum_dimension,
   trivial
+using TensorProducts: ⊗, tensor_product
 using Test: @test, @testset, @test_throws
 using TestExtras: @constinferred
 
@@ -31,14 +30,11 @@ using TestExtras: @constinferred
     @test (@constinferred q ⊗ z0) == z0
     @test (@constinferred z1 ⊗ q) == z1
 
-    # using GradedUnitRanges interface
-    @test space_isequal(fusion_product(z0, z0), gradedrange([z0 => 1]))
-    @test space_isequal(fusion_product(z0, z1), gradedrange([z1 => 1]))
-
     # test different input number
-    @test space_isequal(fusion_product(z0), gradedrange([z0 => 1]))
-    @test space_isequal(fusion_product(z0, z0, z0), gradedrange([z0 => 1]))
-    @test space_isequal(fusion_product(z0, z0, z0, z0), gradedrange([z0 => 1]))
+    @test tensor_product(z0) == z0
+    @test tensor_product(z0, z0, z0) == z0
+    @test tensor_product(z0, z0, z0, z0) == z0
+
     @test (@constinferred block_dimensions(gradedrange([z1 => 1]))) == [1]
   end
   @testset "U(1) fusion rules" begin
@@ -95,9 +91,9 @@ using TestExtras: @constinferred
     @test (@constinferred quantum_dimension(j1 ⊗ j2)) == 2
     @test (@constinferred block_dimensions(j1 ⊗ j2)) == [2]
 
-    @test space_isequal(fusion_product(j2), gradedrange([j2 => 1]))
-    @test space_isequal(fusion_product(j2, j1), gradedrange([j2 => 1]))
-    @test space_isequal(fusion_product(j2, j1, j1), gradedrange([j2 => 1]))
+    @test tensor_product(j2) == j2
+    @test space_isequal(tensor_product(j2, j1), gradedrange([j2 => 1]))
+    @test space_isequal(tensor_product(j2, j1, j1), gradedrange([j2 => 1]))
   end
 
   @testset "Fibonacci fusion rules" begin
@@ -137,7 +133,7 @@ end
     @test space_isequal(trivial(dual(g1)), g1)  # trivial returns nondual
     @test space_isequal(trivial(typeof(g2)), g2)
   end
-  @testset "GradedUnitRange abelian tensor/fusion product" begin
+  @testset "GradedUnitRange abelian tensor product" begin
     g1 = gradedrange([U1(-1) => 1, U1(0) => 1, U1(1) => 2])
     g2 = gradedrange([U1(-2) => 2, U1(0) => 1, U1(1) => 2])
 
@@ -158,8 +154,8 @@ end
     gf = gradedrange([
       U1(-3) => 2, U1(-2) => 2, U1(-1) => 5, U1(0) => 3, U1(1) => 4, U1(2) => 4
     ])
-    @test space_isequal((@constinferred tensor_product(g1, g2)), gt)
-    @test space_isequal((@constinferred fusion_product(g1, g2)), gf)
+    @test space_isequal((@constinferred unmerged_tensor_product(g1, g2)), gt)
+    @test space_isequal((@constinferred tensor_product(g1, g2)), gf)
 
     gtd1 = gradedrange([
       U1(-1) => 2,
@@ -175,8 +171,8 @@ end
     gfd1 = gradedrange([
       U1(-3) => 4, U1(-2) => 2, U1(-1) => 4, U1(0) => 5, U1(1) => 3, U1(2) => 2
     ])
-    @test space_isequal((@constinferred tensor_product(dual(g1), g2)), gtd1)
-    @test space_isequal((@constinferred fusion_product(dual(g1), g2)), gfd1)
+    @test space_isequal((@constinferred unmerged_tensor_product(dual(g1), g2)), gtd1)
+    @test space_isequal((@constinferred tensor_product(dual(g1), g2)), gfd1)
 
     gtd2 = gradedrange([
       U1(1) => 2,
@@ -192,8 +188,8 @@ end
     gfd2 = gradedrange([
       U1(-2) => 2, U1(-1) => 3, U1(0) => 5, U1(1) => 4, U1(2) => 2, U1(3) => 4
     ])
-    @test space_isequal((@constinferred tensor_product(g1, dual(g2))), gtd2)
-    @test space_isequal((@constinferred fusion_product(g1, dual(g2))), gfd2)
+    @test space_isequal((@constinferred unmerged_tensor_product(g1, dual(g2))), gtd2)
+    @test space_isequal((@constinferred tensor_product(g1, dual(g2))), gfd2)
 
     gtd = gradedrange([
       U1(3) => 2,
@@ -209,11 +205,11 @@ end
     gfd = gradedrange([
       U1(-2) => 4, U1(-1) => 4, U1(0) => 3, U1(1) => 5, U1(2) => 2, U1(3) => 2
     ])
-    @test space_isequal((@constinferred tensor_product(dual(g1), dual(g2))), gtd)
-    @test space_isequal((@constinferred fusion_product(dual(g1), dual(g2))), gfd)
+    @test space_isequal((@constinferred unmerged_tensor_product(dual(g1), dual(g2))), gtd)
+    @test space_isequal((@constinferred tensor_product(dual(g1), dual(g2))), gfd)
 
     # test different (non-product) sectors cannot be fused
-    @test_throws MethodError fusion_product(gradedrange([Z{2}(0) => 1]), g1)
+    @test_throws MethodError tensor_product(gradedrange([Z{2}(0) => 1]), g1)
     @test_throws MethodError tensor_product(gradedrange([Z{2}(0) => 1]), g2)
   end
 
@@ -234,11 +230,11 @@ end
       SU2(2) => 2,
     ])
 
-    @test space_isequal(tensor_product(g3, g4), g34)
+    @test space_isequal(unmerged_tensor_product(g3, g4), g34)
 
     @test space_isequal(dual(flip(g3)), g3)  # trivial for SU(2)
     @test space_isequal(
-      (@constinferred fusion_product(g3, g4)),
+      (@constinferred tensor_product(g3, g4)),
       gradedrange([SU2(0) => 4, SU2(1//2) => 6, SU2(1) => 6, SU2(3//2) => 5, SU2(2) => 2]),
     )
     @test (@constinferred block_dimensions(g3)) == [1, 4, 3]
@@ -253,36 +249,36 @@ end
     g6 = gradedrange([s1 => 1, c3 => 1])
     @test space_isequal(dual(flip(g5)), g6)
     @test space_isequal(
-      fusion_product(g5, g6), gradedrange([s1 => 2, f3 => 1, c3 => 1, ad8 => 1])
+      tensor_product(g5, g6), gradedrange([s1 => 2, f3 => 1, c3 => 1, ad8 => 1])
     )
     @test space_isequal(
-      fusion_product(dual(g5), g6),
+      tensor_product(dual(g5), g6),
       gradedrange([s1 => 1, f3 => 1, c3 => 2, SU{3}((2, 2)) => 1]),
     )
     @test space_isequal(
-      fusion_product(g5, dual(g6)),
+      tensor_product(g5, dual(g6)),
       gradedrange([s1 => 1, f3 => 2, c3 => 1, SU{3}((2, 0)) => 1]),
     )
     @test space_isequal(
-      fusion_product(dual(g5), dual(g6)), gradedrange([s1 => 2, f3 => 1, c3 => 1, ad8 => 1])
+      tensor_product(dual(g5), dual(g6)), gradedrange([s1 => 2, f3 => 1, c3 => 1, ad8 => 1])
     )
   end
 
   @testset "Mixed GradedUnitRange - Sector fusion rules" begin
     g1 = gradedrange([U1(1) => 1, U1(2) => 2])
     g2 = gradedrange([U1(2) => 1, U1(3) => 2])
-    @test space_isequal((@constinferred fusion_product(g1, U1(1))), g2)
-    @test space_isequal((@constinferred fusion_product(U1(1), g1)), g2)
+    @test space_isequal((@constinferred tensor_product(g1, U1(1))), g2)
+    @test space_isequal((@constinferred tensor_product(U1(1), g1)), g2)
 
     g3 = gradedrange([SU2(0) => 1, SU2(1//2) => 2])
     g4 = gradedrange([SU2(0) => 2, SU2(1//2) => 1, SU2(1) => 2])
-    @test space_isequal((@constinferred fusion_product(g3, SU2(1//2))), g4)
-    @test space_isequal((@constinferred fusion_product(SU2(1//2), g3)), g4)
+    @test space_isequal((@constinferred tensor_product(g3, SU2(1//2))), g4)
+    @test space_isequal((@constinferred tensor_product(SU2(1//2), g3)), g4)
 
     # test different simple sectors cannot be fused
     @test_throws MethodError Z{2}(0) ⊗ U1(1)
     @test_throws MethodError SU2(1) ⊗ U1(1)
-    @test_throws MethodError fusion_product(g1, SU2(1))
-    @test_throws MethodError fusion_product(U1(1), g3)
+    @test_throws MethodError tensor_product(g1, SU2(1))
+    @test_throws MethodError tensor_product(U1(1), g3)
   end
 end

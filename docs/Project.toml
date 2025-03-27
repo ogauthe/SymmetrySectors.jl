@@ -7,7 +7,7 @@ SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
 
 [compat]
 Documenter = "1.8.1"
-GradedUnitRanges = "0.1.7"
+GradedUnitRanges = "0.2"
 LabelledNumbers = "0.1.1"
 Literate = "2.20.1"
 SymmetrySectors = "0.1.5"

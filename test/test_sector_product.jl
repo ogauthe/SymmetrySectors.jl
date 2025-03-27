@@ -1,6 +1,5 @@
 using SymmetrySectors:
   ×,
-  ⊗,
   Fib,
   Ising,
   SectorProduct,
@@ -13,7 +12,8 @@ using SymmetrySectors:
   quantum_dimension,
   arguments,
   trivial
-using GradedUnitRanges: dual, fusion_product, space_isequal, gradedrange, sector_type
+using GradedUnitRanges: dual, space_isequal, gradedrange, sector_type
+using TensorProducts: ⊗
 using Test: @test, @testset, @test_throws
 using TestExtras: @constinferred
 
@@ -275,7 +275,7 @@ using TestExtras: @constinferred
     g1 = gradedrange([s1 => 2])
     g2 = gradedrange([s2 => 1])
     @test space_isequal(
-      fusion_product(g1, g2),
+      g1 ⊗ g2,
       gradedrange([U1(1) × SU2(0) × Ising("σ") => 2, U1(1) × SU2(1) × Ising("σ") => 2]),
     )
   end
@@ -533,14 +533,14 @@ end
     g2 = gradedrange([s2 => 1])
     s3 = SectorProduct(; A=U1(1), B=SU2(0), C=Ising("σ"))
     s4 = SectorProduct(; A=U1(1), B=SU2(1), C=Ising("σ"))
-    @test space_isequal(fusion_product(g1, g2), gradedrange([s3 => 2, s4 => 2]))
+    @test space_isequal(g1 ⊗ g2, gradedrange([s3 => 2, s4 => 2]))
 
     sA = SectorProduct(; A=U1(1))
     sB = SectorProduct(; B=SU2(1//2))
     sAB = SectorProduct(; A=U1(1), B=SU2(1//2))
     gA = gradedrange([sA => 2])
     gB = gradedrange([sB => 1])
-    @test space_isequal(fusion_product(gA, gB), gradedrange([sAB => 2]))
+    @test space_isequal(gA ⊗ gB, gradedrange([sAB => 2]))
   end
 end
 
@@ -579,7 +579,7 @@ end
     @test (@constinferred quantum_dimension(s)) == 1
 
     g0 = gradedrange([s => 2])
-    @test space_isequal((@constinferred fusion_product(g0, g0)), gradedrange([s => 4]))
+    @test space_isequal((@constinferred ⊗(g0, g0)), gradedrange([s => 4]))
 
     @test (@constinferred s × U1(1)) == st1
     @test (@constinferred U1(1) × s) == st1
