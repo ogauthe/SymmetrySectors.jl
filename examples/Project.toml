@@ -4,6 +4,6 @@ LabelledNumbers = "f856a3a6-4152-4ec4-b2a7-02c1a55d7993"
 SymmetrySectors = "f8a8ad64-adbc-4fce-92f7-ffe2bb36a86e"
 
 [compat]
-GradedUnitRanges = "0.1.7"
+GradedUnitRanges = "0.1.7, 0.2"
 LabelledNumbers = "0.1.1"
 SymmetrySectors = "0.1.5"
