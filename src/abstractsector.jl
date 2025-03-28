@@ -52,6 +52,13 @@ to_gradedrange(c::AbstractSector) = to_gradedrange(labelled(1, c))
 to_gradedrange(l::LabelledInteger) = gradedrange([l])
 to_gradedrange(g::AbstractUnitRange) = g
 
+function nsymbol(s1::AbstractSector, s2::AbstractSector, s3::AbstractSector)
+  full_space = to_gradedrange(s1 ⊗ s2)
+  i = findfirst(==(s3), blocklabels(full_space))
+  isnothing(i) && return 0
+  return unlabel(blocklengths(full_space)[i])
+end
+
 # ===============================  Fusion rule interface  ==================================
 function fusion_rule(c1::AbstractSector, c2::AbstractSector)
   return fusion_rule(combine_styles(SymmetryStyle(c1), SymmetryStyle(c2)), c1, c2)
